@@ -1,0 +1,189 @@
+@import "tailwindcss";
+
+:root {
+  --background: #faf9f5;
+  --foreground: #0c0a09;
+  --font-display: var(--font-jakarta), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif-accent: var(--font-instrument), 'Instrument Serif', Georgia, serif;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, .font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.03em;
+}
+
+/* Signature Accent Font */
+.font-serif-accent, .font-signature {
+  font-family: var(--font-serif-accent);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: normal;
+}
+
+/* Custom subtle scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #f5f4ef;
+}
+::-webkit-scrollbar-thumb {
+  background: #d6d3cd;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a29e;
+}
+
+/* Page Change Morphing Animation (Silky and Sharp) */
+@keyframes pageMorph {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.animate-page-morph {
+  animation: pageMorph 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity, filter;
+}
+
+/* Native View Transitions API support */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+  ::view-transition-old(root) {
+    animation: 0.18s cubic-bezier(0.4, 0, 1, 1) both vFadeOut;
+  }
+  ::view-transition-new(root) {
+    animation: 0.22s cubic-bezier(0, 0, 0.2, 1) both vFadeIn;
+  }
+}
+
+@keyframes vFadeOut {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.998); }
+}
+
+@keyframes vFadeIn {
+  from { opacity: 0; transform: scale(1.002); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Tactile Buttons - ZERO SHADOWS */
+.interactive-btn {
+  transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.16s ease, color 0.16s ease;
+}
+.interactive-btn:hover {
+  transform: translateY(-1px);
+}
+.interactive-btn:active {
+  transform: scale(0.97) translateY(0);
+}
+
+/* Clickable Cards: Strictly NO stroke border changes, subtle light shine sweep on hover, ZERO SHADOWS */
+.clickable-card {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease;
+  box-shadow: none !important;
+}
+
+.clickable-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -130%;
+  width: 90%;
+  height: 100%;
+  background: linear-gradient(
+    105deg,
+    transparent 15%,
+    rgba(255, 255, 255, 0.65) 50%,
+    transparent 85%
+  );
+  transform: skewX(-22deg);
+  transition: left 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.clickable-card:hover::before {
+  left: 140%;
+}
+
+.clickable-card:hover {
+  transform: translateY(-1px);
+}
+
+.clickable-card:active {
+  transform: scale(0.99);
+}
+
+/* Micro-chip interactive */
+.interactive-chip {
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.interactive-chip:hover {
+  transform: scale(1.03);
+}
+
+/* Print Stylesheet for 1-Page Printable Doctor's Brief */
+@media print {
+  @page {
+    margin: 10mm 12mm;
+    size: A4 portrait;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #0c0a09 !important;
+    font-size: 10pt;
+    line-height: 1.35;
+  }
+
+  .no-print,
+  nav,
+  header,
+  footer,
+  button,
+  input {
+    display: none !important;
+  }
+
+  #printable-doctor-brief {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    color: #0c0a09 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .print-page {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+}
